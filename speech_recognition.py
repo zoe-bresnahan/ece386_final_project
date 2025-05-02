@@ -3,21 +3,9 @@ import numpy as np
 import numpy.typing as npt
 import sys
 import time
+import Jetson.GPIO as GPIO
 import torch
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, Pipeline, pipeline
-
-
-def record_audio(duration_seconds: int = 10) -> npt.NDArray:
-    """Record duration_seconds of audio from default microphone.
-    Return a single channel numpy array."""
-    sample_rate = 16000  # Hz
-    samples = int(duration_seconds * sample_rate)
-    # Will use default microphone; on Jetson this is likely a USB WebCam
-    audio = sd.rec(samples, samplerate=sample_rate, channels=1, dtype=np.float32)
-    # Blocks until recording complete
-    sd.wait()
-    # Model expects single axis
-    return np.squeeze(audio, axis=1)
 
 
 def build_pipeline(model_id: str, torch_dtype: torch.dtype, device: str) -> Pipeline:
@@ -42,7 +30,10 @@ def build_pipeline(model_id: str, torch_dtype: torch.dtype, device: str) -> Pipe
     return pipe
 
 
+# function for recording, transcribing, llm, and api chain
+
 if __name__ == "__main__":
+    # build whisper pipeline
     # Get model as argument, default to "distil-whisper/distil-medium.en" if not given
     model_id = sys.argv[1] if len(sys.argv) > 1 else "distil-whisper/distil-medium.en"
     print("Using model_id {model_id}")
@@ -56,15 +47,18 @@ if __name__ == "__main__":
     print(type(pipe))
     print("Done")
 
-    print("Recording...")
-    audio = record_audio()
-    print("Done")
+    # initialize gpio pin29
+    #Init as digital input
+    my_pin = 29
+    GPIO.setmode(GPIO.BOARD)  # Board pin numbering scheme
+    GPIO.setup(my_pin, GPIO.IN) # pin is digital input
 
-    print("Transcribing...")
-    start_time = time.time_ns()
-    speech = pipe(audio)
-    end_time = time.time_ns()
-    print("Done")
+    print('Starting Demo! Move pin 29 between 0V and 3.3V')
 
-    print(speech)
-    print(f"Transcription took {(end_time-start_time)/1000000000} seconds")
+    # wait for rising edge
+    while True:
+        GPIO.wait_for_edge(my_pin, GPIO.RISING)
+        print('UP!')
+
+        weather= function_name(pipe)
+        print(weather)
