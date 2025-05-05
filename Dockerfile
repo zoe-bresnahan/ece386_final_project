@@ -11,7 +11,9 @@ RUN pip install --upgrade --no-cache-dir pip && \
     transformers==4.49.0 \
     accelerate==1.5.2 \
     sounddevice \
-    Jetson.GPIO 
+    Jetson.GPIO \
+    ollama 
+    
 COPY speech_recognition.py .
 ENV HF_HOME="/huggingface/"
 ENV JETSON_MODEL_NAME=JETSON_ORIN_NANO
