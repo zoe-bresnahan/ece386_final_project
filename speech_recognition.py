@@ -5,6 +5,7 @@ import sys
 import time
 import Jetson.GPIO as GPIO
 from ollama import Client
+from ollama import chat
 import torch
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, Pipeline, pipeline
 
@@ -87,7 +88,7 @@ def weather_function(pipe: Pipeline):
     # get transcription
     print("Transcribing...")
     start_time = time.time_ns()
-    speech = pipe(audio)
+    speech = pipe(audio)["text"]
     end_time = time.time_ns()
     print("Done")
 
