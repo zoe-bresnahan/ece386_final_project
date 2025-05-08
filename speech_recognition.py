@@ -48,7 +48,7 @@ def record_audio(duration_seconds: int = 10) -> npt.NDArray:
 
 LLM_MODEL: str = "gemma3:27b"  # Optional, change this to be the model you want
 client: Client = Client(
-    host="http://ai.dfec.xyz:11434"  # Optional, change this to be the URL of your LLM
+    host="http://10.1.69.213:11434"  # Optional, change this to be the URL of your LLM
 )
 
 
