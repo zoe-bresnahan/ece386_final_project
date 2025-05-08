@@ -2,6 +2,7 @@ import sounddevice as sd
 import numpy as np
 import numpy.typing as npt
 import sys
+import requests
 import time
 import Jetson.GPIO as GPIO
 from ollama import Client
@@ -52,6 +53,7 @@ client: Client = Client(
 
 
 def llm_parse_for_wttr(prompt: str) -> str:
+    print(prompt)
     response = client.chat(
         model=LLM_MODEL,
         messages=[
@@ -87,17 +89,21 @@ def weather_function(pipe: Pipeline):
 
     # get transcription
     print("Transcribing...")
-    start_time = time.time_ns()
-    speech = pipe(audio)["text"]
-    end_time = time.time_ns()
+    raw_text = pipe(audio)
+    print(raw_text)
+    speech: str = raw_text["text"]
+    print(speech)
     print("Done")
 
     # get location from transcription using llm
     location = llm_parse_for_wttr(speech)
 
-    weather = f"curl wttr.in/{location}"
+    weather_url = f"https://wttr.in/{location}"
+    # get the weather
+    # 2 lines 
+    response= requests.get(weather_url)
 
-    return weather
+    return response.text
 
 
 if __name__ == "__main__":
