@@ -52,7 +52,6 @@ client: Client = Client(
 )
 
 
-
 def llm_parse_for_wttr(prompt: str) -> str:
     print(prompt)
     response = client.chat(

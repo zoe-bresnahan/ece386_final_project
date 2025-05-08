@@ -18,4 +18,4 @@ RUN pip install --upgrade --no-cache-dir pip && \
 COPY speech_recognition.py .
 ENV HF_HOME="/huggingface/"
 ENV JETSON_MODEL_NAME=JETSON_ORIN_NANO
-ENTRYPOINT ["python", "speech_recognition.py"]  
+ENTRYPOINT ["python", "speech_recognition.py"] 
