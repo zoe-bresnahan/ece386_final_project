@@ -100,8 +100,8 @@ def weather_function(pipe: Pipeline):
 
     weather_url = f"https://wttr.in/{location}"
     # get the weather
-    # 2 lines 
-    response= requests.get(weather_url)
+    # 2 lines
+    response = requests.get(weather_url)
 
     return response.text
 
